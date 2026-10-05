@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delayed — Магазин</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-text">DELAYED</span>
+            </div>
+            <nav class="nav">
+                <a href="#privileges" class="nav-link active" data-tab="privileges">Привилегии</a>
+                <a href="#cases" class="nav-link" data-tab="cases">Кейсы</a>
+                <a href="#services" class="nav-link" data-tab="services">Услуги</a>
+            </nav>
+            <div class="balance-box">
+                <span class="balance-label">Куплено:</span>
+                <span id="purchased-count" class="balance-value">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Купленные items (сверху) -->
+    <div id="purchased-bar" class="purchased-bar hidden">
+        <div class="purchased-bar-content">
+            <span class="purchased-title">Ваши покупки:</span>
+            <div id="purchased-list" class="purchased-list"></div>
+        </div>
+    </div>
+
+    <!-- Привилегии -->
+    <section id="privileges" class="tab-content active">
+        <h2 class="section-title">Привилегии</h2>
+        <p class="section-subtitle">Все привилегии сейчас бесплатные — просто нажмите «Получить»</p>
+        <div class="cards-grid">
+            <!-- Путешественник -->
+            <div class="card" data-name="Путешественник" data-type="Привилегия">
+                <div class="card-header" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Путешественник</h3>
+                    <p class="card-desc">Начальная привилегия для исследователей мира Delayed.</p>
+                    <ul class="card-features">
+                        <li>Режим полёта /fly</li>
+                        <li>3 точки дома</li>
+                        <li>Цветной ник в чате</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Путешественник', 'Привилегия')">Получить</button>
+                </div>
+            </div>
+            <!-- Охотник -->
+            <div class="card" data-name="Охотник" data-type="Привилегия">
+                <div class="card-header" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Охотник</h3>
+                    <p class="card-desc">Для тех, кто не боится битв и квестов.</p>
+                    <ul class="card-features">
+                        <li>Всё из Путешественника</li>
+                        <li>Команда /heal</li>
+                        <li>Ускорение /speed</li>
+                        <li>5 точек дома</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Охотник', 'Привилегия')">Получить</button>
+                </div>
+            </div>
+            <!-- Ветеран -->
+            <div class="card" data-name="Ветеран" data-type="Привилегия">
+                <div class="card-header" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Ветеран</h3>
+                    <p class="card-desc">Опытный игрок, проверенный в боях.</p>
+                    <ul class="card-features">
+                        <li>Всё из Охотника</li>
+                        <li>Команда /feed</li>
+                        <li>10 точек дома</li>
+                        <li>Доступ к ивентам</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Ветеран', 'Привилегия')">Получить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Кейсы -->
+    <section id="cases" class="tab-content">
+        <h2 class="section-title">Кейсы</h2>
+        <p class="section-subtitle">Открой и получи награды — Дилики или Хроны</p>
+        <div class="cards-grid">
+            <!-- Кейс с Диликами -->
+            <div class="card" data-name="Сундук Диликов" data-type="Кейс">
+                <div class="card-header" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Сундук Диликов</h3>
+                    <p class="card-desc">Донат-валюта. Открой и получи от 10 до 500 Диликов.</p>
+                    <ul class="card-features">
+                        <li>10–50 Диликов (70%)</li>
+                        <li>50–200 Диликов (25%)</li>
+                        <li>200–500 Диликов (5%)</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Сундук Диликов', 'Кейс')">Получить</button>
+                </div>
+            </div>
+            <!-- Кейс с Хронами -->
+            <div class="card" data-name="Сундук Хронов" data-type="Кейс">
+                <div class="card-header" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Сундук Хронов</h3>
+                    <p class="card-desc">Игровая валюта. Открой и получи от 50 до 5000 Хронов.</p>
+                    <ul class="card-features">
+                        <li>50–500 Хронов (60%)</li>
+                        <li>500–2000 Хронов (30%)</li>
+                        <li>2000–5000 Хронов (10%)</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Сундук Хронов', 'Кейс')">Получить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services" class="tab-content">
+        <h2 class="section-title">Услуги</h2>
+        <p class="section-subtitle">Разбан, размут и слоты — всё бесплатно пока</p>
+        <div class="cards-grid">
+            <!-- Разбан -->
+            <div class="card" data-name="Разбан" data-type="Услуга">
+                <div class="card-header" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Разбан</h3>
+                    <p class="card-desc">Снятие блокировки с вашего аккаунта.</p>
+                    <ul class="card-features">
+                        <li>Снятие бана</li>
+                        <li>Восстановление доступа</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Разбан', 'Услуга')">Получить</button>
+                </div>
+            </div>
+            <!-- Размут -->
+            <div class="card" data-name="Размут" data-type="Услуга">
+                <div class="card-header" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Размут</h3>
+                    <p class="card-desc">Снятие блокировки чата.</p>
+                    <ul class="card-features">
+                        <li>Снятие мута</li>
+                        <li>Восстановление чата</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Размут', 'Услуга')">Получить</button>
+                </div>
+            </div>
+            <!-- Алмазный сет -->
+            <div class="card" data-name="Алмазный сет" data-type="Услуга">
+                <div class="card-header" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                    <span class="card-badge">Бесплатно</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Алмазный сет</h3>
+                    <p class="card-desc">Полный комплект алмазной брони с зачарованиями.</p>
+                    <ul class="card-features">
+                        <li>Алмазный шлем (Protection IV)</li>
+                        <li>Алмазный нагрудник (Protection IV)</li>
+                        <li>Алмазные поножи (Protection IV)</li>
+                        <li>Алмазные ботинки (Protection IV)</li>
+                    </ul>
+                    <button class="btn btn-free" onclick="purchase(this, 'Алмазный сет', 'Услуга')">Получить</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <p>Delayed — сервер в разработке. Покупки пока не передаются в игру.</p>
+        <p class="footer-sub">Сервер скоро будет доступен на Enzonic</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
