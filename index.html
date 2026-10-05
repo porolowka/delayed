@@ -3,335 +3,851 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DELAYED | Магазин</title>
+    <title>Delayed | Магазин</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --bg: #0f0f1a; --bg2: #14142b; --card: #1a1a35;
-            --card-hover: #20204a; --accent: #e94560; --gold: #ffd700;
-            --text: #e8e8e8; --text-dim: #888; --border: rgba(255,255,255,0.08);
+            --bg: #0f0f1a;
+            --card: #1a1a2e;
+            --card-hover: #22223e;
+            --accent: #e94560;
+            --accent-2: #0f3460;
+            --text: #ffffff;
+            --text-sec: #8a8a9a;
+            --green: #2ecc71;
+            --gold: #f1c40f;
+            --border: rgba(255,255,255,0.08);
         }
-        body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-        .header {
-            background: linear-gradient(135deg, #1a1a3e 0%, #0d0d1f 100%);
-            padding: 30px 20px; text-align: center; border-bottom: 3px solid var(--accent);
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
-        .header h1 {
-            font-size: 2.8em; font-weight: 900; letter-spacing: 6px;
-            background: linear-gradient(135deg, #e94560, #ffd700);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        .header .sub { color: var(--text-dim); font-size: 0.9em; margin-top: 5px; letter-spacing: 2px; }
-        .account-bar {
-            background: var(--bg2); padding: 12px 20px;
-            display: flex; align-items: center; justify-content: center;
-            gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border);
+        .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #e94560, #f1c40f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .account-bar input {
-            background: var(--card); border: 1px solid var(--border); color: var(--text);
-            padding: 8px 14px; border-radius: 6px; font-family: inherit; font-size: 0.9em; width: 200px;
+        .logo-sub { color: var(--text-sec); font-size: 0.75em; letter-spacing: 2px; }
+
+        /* ACCOUNT PANEL */
+        .account-panel {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
-        .account-bar input:focus { outline: none; border-color: var(--accent); }
-        .account-bar .bound-nick { color: var(--gold); font-weight: 700; }
-        .reset-btn {
-            background: rgba(233,69,96,0.2); border: 1px solid var(--accent); color: var(--accent);
-            padding: 8px 16px; border-radius: 6px; cursor: pointer; font-family: inherit;
-            font-size: 0.85em; font-weight: 600; transition: 0.2s;
+        .account-info {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46,204,113,0.15);
+            border: 1px solid var(--green);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.9em;
         }
-        .reset-btn:hover { background: var(--accent); color: white; }
+        .account-info.active { display: flex; }
+        .account-info .nick { color: var(--green); font-weight: 700; }
+
+        .btn-bind {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: 0.2s;
+        }
+        .btn-bind:hover { background: #c81e45; }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid #555;
+            color: #888;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: 0.2s;
+        }
+        .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* BOUGHT BAR */
         .bought-bar {
-            background: rgba(255,215,0,0.08); padding: 12px 20px;
-            display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-            justify-content: center; border-bottom: 1px solid var(--border);
+            max-width: 1100px;
+            margin: 20px auto 10px;
+            padding: 12px 20px;
+            background: var(--card);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            width: 90%;
         }
-        .bought-bar .label { font-weight: 700; color: var(--gold); font-size: 0.9em; }
+        .bought-bar strong { color: var(--gold); }
         .bought-item {
-            background: linear-gradient(135deg, #e94560, #c73650); color: white;
-            padding: 5px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600;
+            background: linear-gradient(135deg, var(--accent), #c81e45);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
             animation: popIn 0.3s ease;
         }
         @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* TABS */
         .tabs {
-            display: flex; justify-content: center; gap: 6px;
-            padding: 20px 20px 10px; flex-wrap: wrap;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
         .tab-btn {
-            background: transparent; border: 2px solid var(--border); color: var(--text-dim);
-            padding: 12px 30px; cursor: pointer; font-family: inherit; font-size: 1em;
-            font-weight: 700; transition: 0.25s; border-radius: 8px;
-            text-transform: uppercase; letter-spacing: 1px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-sec);
+            padding: 10px 24px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: 0.2s;
         }
-        .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+        .tab-btn:hover { color: var(--text); border-color: var(--accent); }
         .tab-btn.active {
-            background: linear-gradient(135deg, #e94560, #c73650);
-            border-color: var(--accent); color: white;
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
         }
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px; padding: 10px 20px 40px; max-width: 1300px; margin: 0 auto;
+
+        /* PRODUCT GRID */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            padding: 0 20px 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
-        .card {
-            background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-            overflow: hidden; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+
+        .product-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: 0.25s;
+            overflow: hidden;
         }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-        .card-banner {
-            height: 90px; display: flex; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: var(--rank-color, var(--accent));
         }
-        .card-banner .icon { font-size: 3em; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
-        .card-banner .rank-badge {
-            position: absolute; top: 8px; left: 12px; font-size: 0.75em;
-            font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: 0.7;
+        .product-card:hover {
+            transform: translateY(-4px);
+            background: var(--card-hover);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
         }
-        .card-banner .free-badge {
-            position: absolute; top: 8px; right: 12px; background: rgba(46,204,113,0.9);
-            color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.75em; font-weight: 700;
+
+        .card-icon {
+            width: 64px;
+            height: 64px;
+            margin: 8px auto 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: radial-gradient(circle, var(--rank-color, var(--accent))40, transparent 70%);
         }
-        .card-body { padding: 16px; text-align: center; }
-        .card-body h3 { font-size: 1.3em; font-weight: 800; margin-bottom: 8px; letter-spacing: 1px; }
-        .card-body .price { font-size: 1.6em; font-weight: 900; color: var(--gold); margin-bottom: 6px; }
-        .card-body .price.free { color: #2ecc71; }
-        .card-body .desc { font-size: 0.85em; color: var(--text-dim); margin-bottom: 14px; line-height: 1.6; }
-        .card-body .drops { font-size: 0.8em; color: var(--text-dim); margin-bottom: 14px; text-align: left; line-height: 1.7; }
-        .card-body .drops .drop-line { display: flex; justify-content: space-between; padding: 2px 0; }
-        .card-body .drops .amt { color: var(--text); font-weight: 600; }
-        .card-body .drops .ch { color: var(--accent); font-weight: 600; }
-        .btn {
-            width: 100%; padding: 13px; border: none; border-radius: 8px;
-            font-family: inherit; font-size: 1em; font-weight: 700; cursor: pointer;
-            transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;
+
+        .card-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--rank-color, var(--text));
         }
-        .btn-free { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
-        .btn-free:hover { filter: brightness(1.15); }
-        .btn-free:disabled { opacity: 0.6; cursor: not-allowed; }
-        .btn-buy { background: linear-gradient(135deg, #e94560, #c73650); color: white; }
-        .btn-buy:hover { filter: brightness(1.15); }
-        .btn-done { background: rgba(46,204,113,0.2); border: 1px solid #2ecc71; color: #2ecc71; cursor: default; }
-        .btn-current { background: rgba(255,215,0,0.15); border: 1px solid var(--gold); color: var(--gold); cursor: default; }
-        .btn-locked { background: #333; color: #666; cursor: not-allowed; border: 1px solid #444; }
+        .card-desc {
+            font-size: 0.8em;
+            color: var(--text-sec);
+            margin-bottom: 12px;
+            min-height: 50px;
+            line-height: 1.5;
+        }
+        .card-price {
+            font-size: 1.4em;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--gold);
+        }
+        .card-price.free { color: var(--green); }
+
+        .badge-free {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--green);
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .btn-buy {
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.95em;
+        }
+        .btn-free {
+            background: var(--green);
+            color: #fff;
+        }
+        .btn-free:hover { background: #27ae60; }
+        .btn-paid {
+            background: #fff;
+            color: #000;
+        }
+        .btn-paid:hover { background: #ddd; }
+        .btn-purchased {
+            background: #333 !important;
+            color: #666 !important;
+            cursor: not-allowed;
+        }
+
+        /* MODAL */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        .modal input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1em;
+        }
+        .modal input:focus { border-color: var(--accent); outline: none; }
+        .modal .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .modal .btn-row button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+        .btn-confirm { background: var(--accent); color: #fff; }
+        .btn-confirm:hover { background: #c81e45; }
+        .btn-cancel { background: #333; color: #aaa; }
+        .btn-cancel:hover { background: #444; }
+        .modal .hint {
+            text-align: center;
+            color: var(--text-sec);
+            font-size: 0.8em;
+            margin-bottom: 15px;
+        }
+
+        /* CHOICE MODAL */
+        .choice-btn {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .choice-btn:hover { border-color: var(--accent); background: var(--card-hover); }
+        .choice-btn .arrow { margin-left: auto; color: var(--accent); }
+
+        /* PLAYER SEARCH */
+        .player-search-input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 15px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1em;
+        }
+        .player-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .player-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .player-card:hover { border-color: var(--accent); background: var(--card-hover); }
+        .player-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #2d2d3d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+        }
+        .player-info { flex: 1; }
+        .player-nick { font-weight: 700; font-size: 1.05em; }
+        .player-stats { font-size: 0.78em; color: var(--text-sec); margin-top: 4px; line-height: 1.6; }
+        .player-rank {
+            display: inline-block;
+            background: #555;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.72em;
+            margin-right: 6px;
+        }
+        .player-rank.default { background: #666; }
+        .player-rank.hero { background: #95a5a6; }
+        .player-rank.titan { background: #3498db; }
+        .player-rank.dragon { background: #c0392b; }
+        .player-select-arrow { color: var(--accent); font-size: 1.5em; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card);
+            border: 1px solid var(--accent);
+            padding: 14px 28px;
+            border-radius: 10px;
+            color: var(--text);
+            font-weight: 600;
+            z-index: 2000;
+            display: none;
+            animation: toastIn 0.3s ease;
+        }
+        .toast.show { display: block; }
+        .toast.error { border-color: #e74c3c; color: #e74c3c; }
+        .toast.success { border-color: var(--green); color: var(--green); }
+        @keyframes toastIn { from { transform: translateX(-50%) translateY(20px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+
+        /* HISTORY */
+        .history-list {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+        .history-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-name { font-weight: 600; }
+        .history-date { color: var(--text-sec); font-size: 0.82em; }
+        .history-empty { text-align: center; color: var(--text-sec); padding: 40px; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>DELAYED</h1>
-        <div class="sub">Сервер с уникальной экономикой времени</div>
+
+    <header>
+        <div>
+            <div class="logo">DELAYED</div>
+            <div class="logo-sub">Сервер с уникальной экономикой времени</div>
+        </div>
+        <div class="account-panel">
+            <div class="account-info" id="accountInfo">
+                <span>Аккаунт:</span>
+                <span class="nick" id="boundNick">—</span>
+            </div>
+            <button class="btn-bind" id="btnBind" onclick="openBindModal()">Привязать аккаунт</button>
+            <button class="btn-reset" onclick="resetAll()">Сбросить всё</button>
+        </div>
+    </header>
+
+    <div class="bought-bar" id="boughtContainer">
+        <strong>Куплено:</strong>
     </div>
-    <div class="account-bar">
-        <span style="color:var(--text-dim); font-size:0.85em;">Minecraft ник:</span>
-        <input type="text" id="mc-nick" placeholder="Введите ник" oninput="onNickInput()">
-        <span id="bound-status" style="font-size:0.85em; color:var(--text-dim);"></span>
-        <button class="reset-btn" onclick="resetAll()">Сбросить всё</button>
-    </div>
-    <div class="bought-bar" id="bought-bar">
-        <span class="label">Куплено:</span>
-        <span id="bought-list" style="color:var(--text-dim); font-size:0.85em;">пока ничего</span>
-    </div>
+
     <div class="tabs">
         <button class="tab-btn active" onclick="showTab('privileges', this)">Привилегии</button>
         <button class="tab-btn" onclick="showTab('cases', this)">Сундуки</button>
         <button class="tab-btn" onclick="showTab('services', this)">Услуги</button>
         <button class="tab-btn" onclick="showTab('history', this)">История</button>
     </div>
-    <div id="privileges" class="grid"></div>
-    <div id="cases" class="grid" style="display:none;"></div>
-    <div id="services" class="grid" style="display:none;"></div>
-    <div id="history" class="grid" style="display:none; grid-template-columns: 1fr; max-width: 700px;">
-        <div id="history-list" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px;"></div>
+
+    <!-- PRIVILEGES -->
+    <div id="privileges" class="products-grid"></div>
+    <!-- CASES -->
+    <div id="cases" class="products-grid" style="display:none;"></div>
+    <!-- SERVICES -->
+    <div id="services" class="products-grid" style="display:none;"></div>
+    <!-- HISTORY -->
+    <div id="history" class="history-list" style="display:none;">
+        <div class="history-empty" id="historyEmpty">История пуста</div>
     </div>
+
+    <!-- BIND MODAL -->
+    <div class="modal-overlay" id="bindModal">
+        <div class="modal">
+            <h2>Привязка аккаунта</h2>
+            <div class="hint">Введите ник и пароль от сервера (пока принимаются любые)</div>
+            <input type="text" id="bindNick" placeholder="Ник (3–16 символов)" maxlength="16">
+            <input type="password" id="bindPass" placeholder="Пароль сервера">
+            <div class="btn-row">
+                <button class="btn-cancel" onclick="closeModal('bindModal')">Отмена</button>
+                <button class="btn-confirm" onclick="doBind()">Привязать</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHOICE MODAL -->
+    <div class="modal-overlay" id="choiceModal">
+        <div class="modal">
+            <h2 id="choiceTitle">Покупка</h2>
+            <button class="choice-btn" onclick="buyForSelf()">
+                <span>🛒 Купить себе</span>
+                <span class="arrow">→</span>
+            </button>
+            <button class="choice-btn" onclick="openPlayerSearch()">
+                <span>🎁 Купить кому-то</span>
+                <span class="arrow">→</span>
+            </button>
+            <div class="btn-row">
+                <button class="btn-cancel" onclick="closeModal('choiceModal')">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER SEARCH MODAL -->
+    <div class="modal-overlay" id="playerModal">
+        <div class="modal" style="max-width:480px;">
+            <h2>Выбор игрока</h2>
+            <input type="text" class="player-search-input" id="playerSearch" placeholder="Введите ник игрока..." oninput="renderPlayerList()">
+            <div class="player-list" id="playerList"></div>
+            <div class="btn-row">
+                <button class="btn-cancel" onclick="closeModal('playerModal')">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM BUY FOR OTHER -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <h2 id="confirmTitle">Подтверждение</h2>
+            <p style="text-align:center; margin-bottom:20px;" id="confirmText"></p>
+            <div class="btn-row">
+                <button class="btn-cancel" onclick="closeModal('confirmModal')">Отмена</button>
+                <button class="btn-confirm" id="confirmBtn">Подтвердить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
     <script>
+        // ===== DATA =====
         const RANKS = [
-            {name:"HERO",id:"hero",icon:"⚔️",color:"#7f8c8d",
-             gradient:"linear-gradient(135deg, #636e72, #2c3e50)",price:"0 ₽",free:true,
-             desc:"/kit hero, /craft, /recipe, /getpos, 5 слотов аукциона, 2 привата"},
-            {name:"TITAN",id:"titan",icon:"⚜️",color:"#3498db",
-             gradient:"linear-gradient(135deg, #2980b9, #1a5276)",price:"0 ₽",free:true,
-             desc:"+ /kit titan, /hat, /feed, /rtpfar, /itemdb, 7 слотов, 4 привата"},
-            {name:"AVENGER",id:"avenger",icon:"⚓️",color:"#9b59b6",
-             gradient:"linear-gradient(135deg, #8e44ad, #5b2c6f)",price:"0 ₽",free:true,
-             desc:"+ /kit avenger, /enderchest, /ext, /ignore, /clear, 9 слотов, 8 приватов, 6 домов"},
-            {name:"OVERLORD",id:"overlord",icon:"👑",color:"#e67e22",
-             gradient:"linear-gradient(135deg, #d35400, #873600)",price:"0 ₽",free:true,
-             desc:"+ /kit overlord, /prefix, /repair, /near, /ptime, x2 валюты, 14 слотов, 16 приватов, 12 домов"},
-            {name:"MAGISTER",id:"magister",icon:"🧙",color:"#1abc9c",
-             gradient:"linear-gradient(135deg, #16a085, #0e6655)",price:"0 ₽",free:true,
-             desc:"+ /kit magister, /nick, /invsee, /repair all, /heal, /tptoggle, 22 слота, 48 приватов, 32 дома"},
-            {name:"IMPERATOR",id:"imperator",icon:"👔",color:"#e74c3c",
-             gradient:"linear-gradient(135deg, #c0392b, #641e16)",price:"0 ₽",free:true,
-             desc:"+ /kit imperator, /kit plus, /broadcast, /realname, /lightning, /rtp, x4 валюты, 36 слотов, 96 приватов, 48 домов"},
-            {name:"DRAGON",id:"dragon",icon:"🐲",color:"#c0392b",
-             gradient:"linear-gradient(135deg, #922b21, #4d1e12)",price:"0 ₽",free:true,
-             desc:"+ /kit dragon, /kit pluspro, /fly, /grant, /sun /rain /night /day, x6 валюты, 999 слотов, 999+ приватов, 999+ домов"}
+            { id:'hero', name:'HERO', color:'#95a5a6', icon:'⚔️', price:0, free:true,
+              desc:'/kit hero, /craft, 5 слотов аукциона, 2 привата' },
+            { id:'titan', name:'TITAN', color:'#3498db', icon:'🔺', price:0, free:true,
+              desc:'+ /hat, /feed, /rtpfar, 7 слотов, 4 привата' },
+            { id:'avenger', name:'AVENGER', color:'#9b59b6', icon:'⚓', price:0, free:true,
+              desc:'+ /enderchest, /ext, /ignore, /clear, 8 приватов' },
+            { id:'overlord', name:'OVERLORD', color:'#e67e22', icon:'👑', price:0, free:true,
+              desc:'+ /prefix, /repair, /near, x2 хронов, 16 приватов' },
+            { id:'magister', name:'MAGISTER', color:'#1abc9c', icon:'🧙', price:0, free:true,
+              desc:'+ /nick, /invsee, /heal, /tptoggle, 48 приватов' },
+            { id:'imperator', name:'IMPERATOR', color:'#e74c3c', icon:'💼', price:0, free:true,
+              desc:'+ /broadcast, /lightning, /rtp, x4 хронов, 96 приватов' },
+            { id:'dragon', name:'DRAGON', color:'#992b1f', icon:'🐲', price:0, free:true,
+              desc:'+ /fly, /grant, управление погодой, x6 хронов, 999+ приватов' }
         ];
 
         const CASES = [
-            {name:"Сундук с хронами",icon:"⏱️",
-             gradient:"linear-gradient(135deg, #2c3e50, #1a1a2e)",price:"50 ₽",free:false,
-             drops:[{amt:"100–500 хронов",ch:"50%"},{amt:"1000–2000 хронов",ch:"30%"},{amt:"2000–5000 хронов",ch:"20%"}]},
-            {name:"Сундук с реликами",icon:"💎",
-             gradient:"linear-gradient(135deg, #d4af37, #8a7100)",price:"100 ₽",free:false,
-             drops:[{amt:"10–100 реликов",ch:"50%"},{amt:"100–300 реликов",ch:"30%"},{amt:"300–500 реликов",ch:"20%"}]}
+            { id:'case_hrons', name:'Сундук с хронами', color:'#3498db', icon:'⏱️', price:50, free:false,
+              desc:'100–500 (50%), 1000–2000 (30%), 2000–5000 (20%)' },
+            { id:'case_diliki', name:'Сундук с диликами', color:'#f1c40f', icon:'💎', price:100, free:false,
+              desc:'10–100 (50%), 100–300 (30%), 300–500 (20%)' }
         ];
 
         const SERVICES = [
-            {name:"Разбан",icon:"🔓",
-             gradient:"linear-gradient(135deg, #2c3e50, #1a1a2e)",price:"Бесплатно",free:true,
-             desc:"Снимает блокировку входа на сервер. Доступно только с привязанным аккаунтом.",needsAccount:true},
-            {name:"Размут",icon:"🗣️",
-             gradient:"linear-gradient(135deg, #2c3e50, #1a1a2e)",price:"Бесплатно",free:true,
-             desc:"Снимает запрет на использование чата. Доступно только с привязанным аккаунтом.",needsAccount:true},
-            {name:"Кожаный сет",icon:"🪁️",
-             gradient:"linear-gradient(135deg, #6d4c3d, #3e2723)",price:"Бесплатно",free:true,
-             desc:"Кожаная броня + деревянные инструменты + жареная баранина. Одноразовая покупка. В игре можно забирать каждые 30 минут.",needsAccount:false}
+            { id:'unban', name:'Разбан', color:'#2ecc71', icon:'🔓', price:0, free:true,
+              desc:'Снятие бана с аккаунта. Только с привязанным аккаунтом. Можно покупать сколько угодно раз.',
+              requiresAccount:true, repeatable:true },
+            { id:'unmute', name:'Размут', color:'#2ecc71', icon:'💬', price:0, free:true,
+              desc:'Снятие мута с аккаунта. Только с привязанным аккаунтом. Можно покупать сколько угодно раз.',
+              requiresAccount:true, repeatable:true },
+            { id:'leather_set', name:'Кожаный сет', color:'#e67e22', icon:'🛡️', price:0, free:true,
+              desc:'Кожаная броня + деревянные инструменты + жареная баранина. В игре можно забирать каждые 30 мин.',
+              requiresAccount:false, repeatable:false }
         ];
 
-        let state = { nick:"", currentRank:null, leatherKit:false, history:[] };
+        // Test player for "buy for someone"
+        const TEST_PLAYERS = [
+            { nick:'Nokia', rank:'Игрок', rankClass:'default', avatar:'🧑', hrons:10, diliki:11, playtime:'3 часа' }
+        ];
 
+        // ===== STATE =====
+        let state = {
+            boundNick: null,
+            currentRank: null,   // rank id
+            purchased: new Set(), // non-repeatable items
+            history: []
+        };
+
+        let pendingPurchase = null; // { type:'rank'|'case'|'service', item:... }
+
+        // ===== LOAD / SAVE =====
         function loadState() {
-            const saved = localStorage.getItem('delayed_state');
-            if (saved) { try { state = Object.assign(state, JSON.parse(saved)); } catch(e) {} }
-            if (state.nick) document.getElementById('mc-nick').value = state.nick;
-            renderAll();
+            const saved = localStorage.getItem('delayed_state_v2');
+            if (saved) {
+                const obj = JSON.parse(saved);
+                state.boundNick = obj.boundNick || null;
+                state.currentRank = obj.currentRank || null;
+                state.purchased = new Set(obj.purchased || []);
+                state.history = obj.history || [];
+            }
         }
-        function saveState() { localStorage.setItem('delayed_state', JSON.stringify(state)); }
-        function resetAll() {
-            state = { nick:"", currentRank:null, leatherKit:false, history:[] };
-            localStorage.removeItem('delayed_state');
-            document.getElementById('mc-nick').value = "";
-            renderAll();
+        function saveState() {
+            localStorage.setItem('delayed_state_v2', JSON.stringify({
+                boundNick: state.boundNick,
+                currentRank: state.currentRank,
+                purchased: Array.from(state.purchased),
+                history: state.history
+            }));
         }
-        function onNickInput() {
-            state.nick = document.getElementById('mc-nick').value.trim();
-            saveState();
-            renderServices(); updateBoundStatus();
+
+        // ===== RENDER =====
+        function renderAll() {
+            renderPrivileges();
+            renderCases();
+            renderServices();
+            renderBought();
+            renderHistory();
+            updateAccountUI();
         }
-        function updateBoundStatus() {
-            const el = document.getElementById('bound-status');
-            if (state.nick) el.innerHTML = 'Привязан: <span class="bound-nick">'+state.nick+'</span>';
-            else el.textContent = 'не привязан';
+
+        function renderPrivileges() {
+            const grid = document.getElementById('privileges');
+            grid.innerHTML = '';
+            RANKS.forEach(r => {
+                const isCurrent = state.currentRank === r.id;
+                const isReplaced = state.currentRank && RANKS.findIndex(x=>x.id===r.id) < RANKS.findIndex(x=>x.id===state.currentRank);
+                let btnText = 'Бесплатно', btnClass = 'btn-free', disabled = '';
+                if (isCurrent) { btnText = 'Текущий ранг ✓'; btnClass = 'btn-purchased'; disabled = 'disabled'; }
+                else if (isReplaced) { btnText = 'Заменён'; btnClass = 'btn-purchased'; disabled = 'disabled'; }
+                grid.innerHTML += `
+                    <div class="product-card" style="--rank-color:${r.color}">
+                        <span class="badge-free">БЕСПЛАТНО</span>
+                        <div class="card-icon">${r.icon}</div>
+                        <div class="card-title">${r.name}</div>
+                        <div class="card-desc">${r.desc}</div>
+                        <div class="card-price free">0 ₽</div>
+                        <button class="btn-buy ${btnClass}" ${disabled} onclick="initiatePurchase('rank','${r.id}')">${btnText}</button>
+                    </div>`;
+            });
         }
-        function showTab(tab, btn) {
-            document.querySelectorAll('.grid').forEach(el => el.style.display = 'none');
+
+        function renderCases() {
+            const grid = document.getElementById('cases');
+            grid.innerHTML = '';
+            CASES.forEach(c => {
+                grid.innerHTML += `
+                    <div class="product-card" style="--rank-color:${c.color}">
+                        <div class="card-icon">${c.icon}</div>
+                        <div class="card-title">${c.name}</div>
+                        <div class="card-desc">${c.desc}</div>
+                        <div class="card-price">${c.price} ₽</div>
+                        <button class="btn-buy btn-paid" onclick="initiatePurchase('case','${c.id}')">Купить</button>
+                    </div>`;
+            });
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('services');
+            grid.innerHTML = '';
+            SERVICES.forEach(s => {
+                const isPurchased = state.purchased.has(s.id);
+                let btnText = 'Бесплатно', btnClass = 'btn-free', disabled = '';
+                if (isPurchased && !s.repeatable) { btnText = 'Получено ✓'; btnClass = 'btn-purchased'; disabled = 'disabled'; }
+                if (s.requiresAccount && !state.boundNick) {
+                    btnText = 'Нужен аккаунт';
+                    btnClass = 'btn-purchased';
+                    disabled = 'disabled';
+                }
+                grid.innerHTML += `
+                    <div class="product-card" style="--rank-color:${s.color}">
+                        <span class="badge-free">БЕСПЛАТНО</span>
+                        <div class="card-icon">${s.icon}</div>
+                        <div class="card-title">${s.name}</div>
+                        <div class="card-desc">${s.desc}</div>
+                        <div class="card-price free">0 ₽</div>
+                        <button class="btn-buy ${btnClass}" ${disabled} onclick="initiatePurchase('service','${s.id}')">${btnText}</button>
+                    </div>`;
+            });
+        }
+
+        function renderBought() {
+            const bar = document.getElementById('boughtContainer');
+            bar.innerHTML = '<strong>Куплено:</strong>';
+            if (state.currentRank) {
+                const r = RANKS.find(x=>x.id===state.currentRank);
+                if (r) bar.innerHTML += `<span class="bought-item">${r.icon} ${r.name}</span>`;
+            }
+            if (state.purchased.has('leather_set')) {
+                bar.innerHTML += '<span class="bought-item">🛡️ Кожаный сет</span>';
+            }
+            if (!state.currentRank && !state.purchased.has('leather_set')) {
+                bar.innerHTML += '<span style="color:var(--text-sec);font-size:0.85em;">пока ничего</span>';
+            }
+        }
+
+        function renderHistory() {
+            const el = document.getElementById('history');
+            const empty = document.getElementById('historyEmpty');
+            if (state.history.length === 0) {
+                el.innerHTML = '<div class="history-empty">История пуста</div>';
+                return;
+            }
+            el.innerHTML = '';
+            state.history.forEach(h => {
+                el.innerHTML += `
+                    <div class="history-item">
+                        <span class="history-name">${h.icon} ${h.name}</span>
+                        <span class="history-date">${h.date} → ${h.target}</span>
+                    </div>`;
+            });
+        }
+
+        function updateAccountUI() {
+            const info = document.getElementById('accountInfo');
+            const nickEl = document.getElementById('boundNick');
+            const btnBind = document.getElementById('btnBind');
+            if (state.boundNick) {
+                info.classList.add('active');
+                nickEl.textContent = state.boundNick;
+                btnBind.style.display = 'none';
+            } else {
+                info.classList.remove('active');
+                btnBind.style.display = 'block';
+            }
+        }
+
+        // ===== TABS =====
+        function showTab(name, btn) {
+            document.querySelectorAll('.products-grid, .history-list').forEach(el => el.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tab).style.display = 'grid';
+            document.getElementById(name).style.display = name === 'history' ? 'block' : 'grid';
             btn.classList.add('active');
         }
-        function renderPrivileges() {
-            const c = document.getElementById('privileges'); c.innerHTML = '';
-            RANKS.forEach((r, i) => {
-                const isCurrent = state.currentRank === r.id;
-                const isOwned = state.currentRank && RANKS.findIndex(x => x.id === state.currentRank) >= i;
-                let btn;
-                if (isCurrent) btn = '<button class="btn btn-current">Текущий ранг ✓</button>';
-                else if (isOwned) btn = '<button class="btn btn-done" disabled>Куплено ✓</button>';
-                else btn = '<button class="btn btn-free" onclick="buyRank('+i+')">Бесплатно</button>';
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML =
-                    '<div class="card-banner" style="background:'+r.gradient+'">'+
-                    '<span class="rank-badge" style="color:'+r.color+';">'+r.name+'</span>'+
-                    (r.free?'<span class="free-badge">БЕСПЛАТНО</span>':'')+
-                    '<span class="icon">'+r.icon+'</span></div>'+
-                    '<div class="card-body"><h3 style="color:'+r.color+';">'+r.name+'</h3>'+
-                    '<div class="price free">'+r.price+'</div>'+
-                    '<div class="desc">'+r.desc+'</div>'+btn+'</div>';
-                c.appendChild(card);
-            });
+
+        // ===== MODALS =====
+        function openBindModal() { document.getElementById('bindModal').classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+        function doBind() {
+            const nick = document.getElementById('bindNick').value.trim();
+            const pass = document.getElementById('bindPass').value.trim();
+            if (nick.length < 3 || nick.length > 16) { showToast('Ник: 3–16 символов', 'error'); return; }
+            if (pass.length < 1) { showToast('Введите пароль', 'error'); return; }
+            state.boundNick = nick;
+            saveState();
+            closeModal('bindModal');
+            document.getElementById('bindNick').value = '';
+            document.getElementById('bindPass').value = '';
+            renderAll();
+            showToast('Аккаунт привязан: ' + nick, 'success');
         }
-        function buyRank(index) {
-            const r = RANKS[index];
-            if (state.currentRank) {
-                const oi = RANKS.findIndex(x => x.id === state.currentRank);
-                addHistory(RANKS[oi].name+' (заменён)','0 ₽');
+
+        // ===== PURCHASE FLOW =====
+        function initiatePurchase(type, id) {
+            let item;
+            if (type === 'rank') item = RANKS.find(r => r.id === id);
+            else if (type === 'case') item = CASES.find(c => c.id === id);
+            else item = SERVICES.find(s => s.id === id);
+            if (!item) return;
+            pendingPurchase = { type, item };
+            document.getElementById('choiceTitle').textContent = item.name;
+            document.getElementById('choiceModal').classList.add('active');
+        }
+
+        function buyForSelf() {
+            closeModal('choiceModal');
+            if (!state.boundNick) {
+                showToast('Невозможно купить: аккаунт не привязан', 'error');
+                return;
             }
-            state.currentRank = r.id;
-            addHistory(r.name, '0 ₽');
-            saveState(); renderAll();
+            completePurchase(state.boundNick);
         }
-        function renderCases() {
-            const c = document.getElementById('cases'); c.innerHTML = '';
-            CASES.forEach((cs, i) => {
-                let dh = '';
-                cs.drops.forEach(d => { dh += '<div class="drop-line"><span class="amt">'+d.amt+'</span><span class="ch">'+d.ch+'</span></div>'; });
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML =
-                    '<div class="card-banner" style="background:'+cs.gradient+'">'+
-                    '<span class="icon">'+cs.icon+'</span></div>'+
-                    '<div class="card-body"><h3>'+cs.name+'</h3>'+
-                    '<div class="price">'+cs.price+'</div>'+
-                    '<div class="drops">'+dh+'</div>'+
-                    '<button class="btn btn-buy" id="case-btn-'+i+'" onclick="buyCase('+i+')">Купить</button></div>';
-                c.appendChild(card);
+
+        function openPlayerSearch() {
+            closeModal('choiceModal');
+            document.getElementById('playerSearch').value = '';
+            renderPlayerList();
+            document.getElementById('playerModal').classList.add('active');
+        }
+
+        function renderPlayerList() {
+            const query = document.getElementById('playerSearch').value.trim().toLowerCase();
+            const list = document.getElementById('playerList');
+            const filtered = query ? TEST_PLAYERS.filter(p => p.nick.toLowerCase().includes(query)) : TEST_PLAYERS;
+            list.innerHTML = '';
+            if (filtered.length === 0) { list.innerHTML = '<p style="text-align:center;color:var(--text-sec);padding:20px;">Игроки не найдены</p>'; return; }
+            filtered.forEach(p => {
+                list.innerHTML += `
+                    <div class="player-card" onclick="selectPlayer('${p.nick}')">
+                        <div class="player-avatar">${p.avatar}</div>
+                        <div class="player-info">
+                            <div class="player-nick">${p.nick}</div>
+                            <div class="player-stats">
+                                <span class="player-rank ${p.rankClass}">${p.rank}</span>
+                                ⏱️ ${p.hrons} хронов | 💎 ${p.diliki} диликов<br>
+                                🎮 Играет ${p.playtime}
+                            </div>
+                        </div>
+                        <span class="player-select-arrow">→</span>
+                    </div>`;
             });
         }
-        function buyCase(index) {
-            const cs = CASES[index];
-            const btn = document.getElementById('case-btn-'+index);
-            btn.textContent = 'Куплено ✓'; btn.className = 'btn btn-done';
-            addHistory(cs.name, cs.price); saveState();
-            setTimeout(() => { btn.textContent = 'Купить'; btn.className = 'btn btn-buy'; }, 1500);
-            renderHistory();
+
+        function selectPlayer(nick) {
+            closeModal('playerModal');
+            document.getElementById('confirmTitle').textContent = 'Купить для ' + nick + '?';
+            document.getElementById('confirmText').textContent = pendingPurchase.item.name + ' → ' + nick;
+            document.getElementById('confirmBtn').onclick = function() {
+                closeModal('confirmModal');
+                completePurchase(nick);
+            };
+            document.getElementById('confirmModal').classList.add('active');
         }
-        function renderServices() {
-            const c = document.getElementById('services'); c.innerHTML = '';
-            SERVICES.forEach((s, i) => {
-                const isLeather = s.name === 'Кожаный сет';
-                const isOwned = isLeather && state.leatherKit;
-                const isLocked = s.needsAccount && !state.nick;
-                let btn;
-                if (isOwned) btn = '<button class="btn btn-done" disabled>Получено ✓</button>';
-                else if (isLocked) btn = '<button class="btn btn-locked" disabled>Привяжите аккаунт</button>';
-                else btn = '<button class="btn btn-free" onclick="buyService('+i+')">Бесплатно</button>';
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML =
-                    '<div class="card-banner" style="background:'+s.gradient+'">'+
-                    (s.free?'<span class="free-badge">БЕСПЛАТНО</span>':'')+
-                    '<span class="icon">'+s.icon+'</span></div>'+
-                    '<div class="card-body"><h3>'+s.name+'</h3>'+
-                    '<div class="price free">'+s.price+'</div>'+
-                    '<div class="desc">'+s.desc+'</div>'+btn+'</div>';
-                c.appendChild(card);
-            });
-        }
-        function buyService(index) {
-            const s = SERVICES[index];
-            if (s.name === 'Кожаный сет') state.leatherKit = true;
-            addHistory(s.name, '0 ₽'); saveState(); renderAll();
-        }
-        function addHistory(name, price) {
-            const now = new Date();
-            const ds = now.toLocaleString('ru-RU', {day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
-            state.history.unshift({name,price,date:ds});
+
+        function completePurchase(targetNick) {
+            const { type, item } = pendingPurchase;
+            const dateStr = new Date().toLocaleString('ru-RU', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+
+            if (type === 'rank') {
+                state.currentRank = item.id;
+            } else if (type === 'service' && !item.repeatable) {
+                state.purchased.add(item.id);
+            }
+
+            state.history.unshift({ icon: item.icon || '📦', name: item.name, date: dateStr, target: targetNick });
             if (state.history.length > 50) state.history.pop();
+            saveState();
+            renderAll();
+
+            const verb = item.free ? 'Получено' : 'Куплено';
+            showToast(`${verb}: ${item.name} → ${targetNick}`, 'success');
+            pendingPurchase = null;
         }
-        function renderHistory() {
-            const el = document.getElementById('history-list');
-            if (state.history.length === 0) { el.innerHTML = '<div style="text-align:center;color:var(--text-dim);padding:30px;">История пуста</div>'; return; }
-            let h = '<div style="font-weight:700;margin-bottom:15px;color:var(--gold);">История покупок</div>';
-            state.history.forEach(item => {
-                h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);">'+
-                    '<div><div style="font-weight:600;">'+item.name+'</div>'+
-                    '<div style="font-size:0.8em;color:var(--text-dim);">'+item.date+'</div></div>'+
-                    '<div style="color:'+(item.price==='0 ₽'?'#2ecc71':'var(--gold)')+';font-weight:700;">'+item.price+'</div></div>';
-            });
-            el.innerHTML = h;
+
+        // ===== TOAST =====
+        let toastTimer;
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + (type || '');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
         }
-        function renderBought() {
-            const el = document.getElementById('bought-list');
-            const items = [];
-            if (state.currentRank) { const r = RANKS.find(x => x.id === state.currentRank); items.push(r.name); }
-            if (state.leatherKit) items.push('Кожаный сет');
-            if (items.length === 0) { el.textContent = 'пока ничего'; el.style.color = 'var(--text-dim)'; }
-            else el.innerHTML = items.map(i => '<span class="bought-item">'+i+'</span>').join(' ');
+
+        // ===== RESET =====
+        function resetAll() {
+            state = { boundNick:null, currentRank:null, purchased:new Set(), history:[] };
+            localStorage.removeItem('delayed_state_v2');
+            localStorage.removeItem('delayed_bought');
+            renderAll();
+            showToast('Всё сброшено', 'success');
         }
-        function renderAll() {
-            renderPrivileges(); renderCases(); renderServices();
-            renderHistory(); renderBought(); updateBoundStatus();
-        }
+
+        // ===== INIT =====
         loadState();
+        renderAll();
     </script>
 </body>
 </html>
