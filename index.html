@@ -5,324 +5,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Delayed | Магазин</title>
 <style>
-:root {
-  --bg: #0f0f1a;
-  --card: #1a1a2e;
-  --accent: #e94560;
-  --gold: #ffd700;
-  --green: #2ecc71;
-  --text: #fff;
-  --sec: #8892b0;
-}
-* { box-sizing: border-box; }
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-  min-height: 100vh;
-}
-header {
-  padding: 20px 20px 15px;
-  text-align: center;
-  border-bottom: 1px solid #222;
-}
-h1 { margin: 0; font-size: 2em; letter-spacing: 4px; text-transform: uppercase; }
-.subtitle { color: var(--accent); margin-top: 4px; font-size: 0.85em; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0f0f1e; color: #fff; min-height: 100vh; }
 
-/* Top bar */
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 30px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.bought-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  flex: 1;
-}
-.bought-item {
-  background: var(--accent);
-  color: #fff;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.85em;
-}
-.bought-item.rank { background: var(--gold); color: #000; }
-.top-right { display: flex; gap: 10px; align-items: center; }
-.account-badge {
-  background: var(--green);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 0.85em;
-  font-weight: bold;
-}
-.btn-link {
-  background: #2a2a4a;
-  color: #fff;
-  border: 1px solid #444;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85em;
-}
-.btn-link:hover { background: #3a3a6a; }
-.btn-reset {
-  background: #c0392b;
-  color: #fff;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85em;
-}
-.btn-reset:hover { background: #e74c3c; }
+/* Шапка */
+.header { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: #16162e; border-bottom: 1px solid #2a2a4a; }
+.header h1 { font-size: 1.4em; letter-spacing: 2px; color: #e94560; }
+.header-actions { display: flex; gap: 10px; align-items: center; }
+.nick-display { background: #1e1e3a; padding: 8px 14px; border-radius: 6px; font-size: 0.85em; }
+.nick-display.linked { color: #2ecc71; border: 1px solid #2ecc71; }
+.btn-link { background: #e94560; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85em; }
+.btn-link:hover { background: #c73e54; }
+.btn-reset { background: #2a2a4a; color: #aaa; border: 1px solid #444; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85em; }
+.btn-reset:hover { background: #e94560; color: #fff; border-color: #e94560; }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin: 15px 0;
-}
-.tab-btn {
-  background: transparent;
-  border: 2px solid #333;
-  color: var(--text);
-  padding: 10px 28px;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 1em;
-  transition: 0.2s;
-}
-.tab-btn.active {
-  border-color: var(--accent);
-  background: rgba(233,69,96,0.15);
-  color: var(--accent);
-}
+/* Куплено */
+.bought-bar { background: #12122a; padding: 12px 25px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid #2a2a4a; }
+.bought-bar strong { color: #888; font-size: 0.9em; }
+.bought-tag { background: #e94560; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; }
+.bought-tag.rank { background: #f39c12; }
+.bought-tag.set { background: #2ecc71; }
+.bought-count { color: #666; font-size: 0.85em; }
 
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 20px;
-  padding: 0 30px 40px;
-  max-width: 1300px;
-  margin: 0 auto;
-}
-.card {
-  background: var(--card);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 14px;
-  padding: 22px;
-  text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
-}
-.card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
-.card-icon {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2em;
-  border-radius: 12px;
-}
-.card-title { font-size: 1.25em; margin: 8px 0; }
-.card-price { font-size: 1.4em; font-weight: bold; margin: 8px 0 12px; }
-.card-price.free { color: var(--green); }
-.card-price.paid { color: var(--gold); }
-.card-desc { font-size: 0.82em; color: var(--sec); margin-bottom: 15px; min-height: 50px; }
-.card-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 0.95em;
-  transition: 0.2s;
-}
-.btn-free { background: var(--green); color: #fff; }
-.btn-buy { background: var(--gold); color: #000; }
-.btn-free:hover, .btn-buy:hover { opacity: 0.85; }
-.btn-locked { background: #333; color: #666; cursor: not-allowed; }
-.btn-done { background: #2a2a4a; color: var(--sec); cursor: default; }
+/* Вкладки */
+.tabs { display: flex; justify-content: center; gap: 8px; padding: 18px 0; }
+.tab-btn { background: transparent; border: 1px solid #3a3a5a; color: #aaa; padding: 8px 22px; border-radius: 6px; cursor: pointer; font-size: 0.95em; transition: 0.2s; }
+.tab-btn.active { background: #e94560; border-color: #e94560; color: #fff; }
+.tab-btn:hover:not(.active) { border-color: #e94560; color: #fff; }
 
-/* Badge */
-.badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 0.72em;
-  font-weight: bold;
-}
-.badge-free { background: var(--green); color: #fff; }
+/* Сетка */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; padding: 0 25px 40px; max-width: 1200px; margin: 0 auto; }
+.card { background: #1a1a36; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; text-align: center; position: relative; transition: 0.2s; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); border-color: #3a3a6a; }
+.card-icon { font-size: 3em; margin-bottom: 10px; display: block; }
+.card-title { font-size: 1.15em; margin-bottom: 8px; }
+.card-price { font-size: 1.4em; font-weight: bold; margin-bottom: 6px; }
+.card-price.free { color: #2ecc71; }
+.card-price.paid { color: #e94560; }
+.card-desc { font-size: 0.82em; color: #888; margin-bottom: 15px; line-height: 1.4; }
+.badge-free { position: absolute; top: 10px; right: 10px; background: #2ecc71; color: #fff; padding: 3px 10px; border-radius: 4px; font-size: 0.75em; font-weight: bold; }
+.action-btn { width: 100%; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.95em; transition: 0.2s; }
+.action-btn.free { background: #fff; color: #000; }
+.action-btn.free:hover { background: #ddd; }
+.action-btn.paid { background: #e94560; color: #fff; }
+.action-btn.paid:hover { background: #c73e54; }
+.action-btn.disabled { background: #333; color: #666; cursor: not-allowed; }
+.action-btn.done { background: #2ecc71; color: #fff; cursor: default; }
 
-/* Modal */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 100;
-  justify-content: center;
-  align-items: center;
-}
-.modal-overlay.active { display: flex; }
-.modal {
-  background: var(--card);
-  border: 1px solid #444;
-  border-radius: 16px;
-  padding: 30px;
-  max-width: 480px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.modal h2 { margin-top: 0; text-align: center; }
-.modal-field { margin: 12px 0; }
-.modal-field label { display: block; margin-bottom: 5px; font-size: 0.85em; color: var(--sec); }
-.modal-field input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #0f0f1a;
-  color: #fff;
-  font-size: 1em;
-}
-.modal-btn {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 8px;
-  font-size: 1em;
-}
-.modal-btn-primary { background: var(--accent); color: #fff; }
-.modal-btn-primary:hover { background: #ff5777; }
-.modal-btn-secondary { background: #2a2a4a; color: #fff; }
-.modal-btn-secondary:hover { background: #3a3a6a; }
-.modal-btn-danger { background: #c0392b; color: #fff; }
-.modal-error { color: #ff6b6b; font-size: 0.85em; text-align: center; margin: 8px 0; }
+/* Модалки */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 100; justify-content: center; align-items: center; }
+.modal-overlay.show { display: flex; }
+.modal { background: #1a1a36; border: 1px solid #3a3a6a; border-radius: 14px; padding: 25px; max-width: 420px; width: 90%; }
+.modal h3 { margin-bottom: 18px; text-align: center; }
+.modal-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; border: none; border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: bold; transition: 0.2s; }
+.modal-btn.self { background: #e94560; color: #fff; }
+.modal-btn.self:hover { background: #c73e54; }
+.modal-btn.other { background: #3a3a6a; color: #fff; }
+.modal-btn.other:hover { background: #4a4a7a; }
+.modal-btn.close { background: transparent; color: #888; border: 1px solid #444; }
+.modal-btn.close:hover { color: #fff; border-color: #888; }
+.modal-error { color: #e94560; text-align: center; font-size: 0.9em; margin-top: 10px; display: none; }
+.modal-error.show { display: block; }
 
-.choice-btn {
-  display: block;
-  width: 100%;
-  padding: 16px;
-  margin: 8px 0;
-  border: 2px solid #444;
-  border-radius: 12px;
-  background: transparent;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1.05em;
-  transition: 0.2s;
-}
-.choice-btn:hover { border-color: var(--accent); background: rgba(233,69,96,0.1); }
+/* Поиск игроков */
+.search-input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #3a3a5a; background: #0f0f1e; color: #fff; font-size: 0.95em; }
+.player-list { max-height: 350px; overflow-y: auto; }
+.player-card { display: flex; align-items: center; gap: 12px; padding: 12px; background: #12122a; border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; border: 1px solid #2a2a4a; }
+.player-card:hover { border-color: #e94560; }
+.player-card.disabled { opacity: 0.4; cursor: not-allowed; }
+.player-card.disabled:hover { border-color: #2a2a4a; }
+.player-avatar { width: 48px; height: 48px; border-radius: 6px; background: #2a2a4a; display: flex; align-items: center; justify-content: center; font-size: 2em; flex-shrink: 0; }
+.player-info { flex: 1; }
+.player-nick { font-weight: bold; font-size: 1em; }
+.player-rank { font-size: 0.8em; margin-top: 2px; padding: 2px 8px; border-radius: 3px; display: inline-block; }
+.player-stats { font-size: 0.75em; color: #888; margin-top: 4px; }
+.player-already { font-size: 0.8em; color: #2ecc71; font-weight: bold; }
 
-/* Player search */
-.search-box {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #0f0f1a;
-  color: #fff;
-  font-size: 1em;
-  margin-bottom: 12px;
-}
-.player-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid #333;
-  border-radius: 10px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-.player-card:hover { border-color: var(--accent); background: rgba(233,69,96,0.05); }
-.player-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  background: #2a2a4a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5em;
-}
-.player-info { flex: 1; text-align: left; }
-.player-nick { font-weight: bold; font-size: 1.05em; }
-.player-stats { font-size: 0.8em; color: var(--sec); margin-top: 3px; }
-.player-rank-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.75em;
-  font-weight: bold;
-  margin-left: 6px;
-}
-
-/* History */
-.history-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 14px;
-  border-bottom: 1px solid #222;
-  font-size: 0.9em;
-}
-.history-date { color: var(--sec); font-size: 0.8em; }
-.history-recipient { color: var(--accent); font-weight: bold; }
-
-/* Colors for ranks */
-.hero { background: rgba(150,150,150,0.15); color: #aaa; }
-.titan { background: rgba(52,152,219,0.15); color: #3498db; }
-.avenger { background: rgba(155,89,182,0.15); color: #9b59b6; }
-.overlord { background: rgba(230,126,34,0.15); color: #e67e22; }
-.magister { background: rgba(26,188,156,0.15); color: #1abc9c; }
-.imperator { background: rgba(231,76,60,0.15); color: #e74c3c; }
-.dragon { background: rgba(139,0,0,0.2); color: #c0392b; }
-.player-rank { background: rgba(128,128,128,0.1); color: #888; }
-
-.section-title {
-  text-align: center;
-  font-size: 1.4em;
-  margin: 20px 0 10px;
-  color: var(--text);
-}
+/* История */
+.history-list { max-width: 800px; margin: 0 auto; padding: 0 25px 40px; }
+.history-item { background: #1a1a36; border: 1px solid #2a2a4a; border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.history-name { font-weight: bold; }
+.history-to { color: #888; font-size: 0.85em; }
+.history-date { color: #555; font-size: 0.8em; }
+.no-history { text-align: center; color: #555; padding: 40px; }
 </style>
 </head>
 <body>
 
-<header>
+<div class="header">
   <h1>DELAYED</h1>
-  <p class="subtitle">Сервер с уникальной экономикой времени</p>
-</header>
-
-<div class="top-bar">
-  <div class="bought-bar" id="bought-container">
-    <strong>Куплено:</strong>
-  </div>
-  <div class="top-right" id="top-right">
+  <div class="header-actions">
+    <span class="nick-display" id="nickDisplay" style="display:none;"></span>
+    <button class="btn-link" id="btnLink" onclick="openLinkModal()">Привязать аккаунт</button>
     <button class="btn-reset" onclick="resetAll()">Сбросить всё</button>
   </div>
+</div>
+
+<div class="bought-bar" id="boughtBar">
+  <strong>Куплено:</strong>
+  <span class="bought-count" id="boughtCount">пусто</span>
 </div>
 
 <div class="tabs">
@@ -332,507 +113,438 @@ h1 { margin: 0; font-size: 2em; letter-spacing: 4px; text-transform: uppercase; 
   <button class="tab-btn" onclick="showTab('history', this)">История</button>
 </div>
 
-<!-- PRIVILEGES -->
+<!-- Привилегии -->
 <div id="privileges" class="grid"></div>
-
-<!-- CASES -->
+<!-- Кейсы -->
 <div id="cases" class="grid" style="display:none;"></div>
-
-<!-- SERVICES -->
+<!-- Услуги -->
 <div id="services" class="grid" style="display:none;"></div>
+<!-- История -->
+<div id="history" class="history-list" style="display:none;">
+  <div class="no-history" id="noHistory">Пока пусто</div>
+</div>
 
-<!-- HISTORY -->
-<div id="history" class="grid" style="display:none; grid-template-columns: 1fr; max-width: 700px;"></div>
+<!-- Модалка привязки -->
+<div class="modal-overlay" id="linkModal">
+  <div class="modal">
+    <h3>Привязка аккаунта</h3>
+    <input class="search-input" id="linkNick" placeholder="Ник Minecraft (3-16 символов)" maxlength="16">
+    <input class="search-input" id="linkPass" placeholder="Пароль (для сервера)" type="password">
+    <button class="modal-btn self" onclick="doLink()">Привязать</button>
+    <button class="modal-btn close" onclick="closeModal('linkModal')">Отмена</button>
+    <div class="modal-error" id="linkError"></div>
+  </div>
+</div>
 
-<!-- Modal -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal" id="modal-content"></div>
+<!-- Модалка покупки -->
+<div class="modal-overlay" id="buyModal">
+  <div class="modal">
+    <h3 id="buyModalTitle">Покупка</h3>
+    <button class="modal-btn self" onclick="buySelf()">Купить себе</button>
+    <button class="modal-btn other" onclick="buyOther()">Купить кому-то</button>
+    <button class="modal-btn close" onclick="closeModal('buyModal')">Отмена</button>
+    <div class="modal-error" id="buyError"></div>
+  </div>
+</div>
+
+<!-- Модалка поиска игроков -->
+<div class="modal-overlay" id="searchModal">
+  <div class="modal" style="max-width:500px;">
+    <h3>Выберите игрока</h3>
+    <input class="search-input" id="searchInput" placeholder="Введите ник (пусто = все)" oninput="renderPlayers()">
+    <div class="player-list" id="playerList"></div>
+    <button class="modal-btn close" onclick="closeModal('searchModal')">Отмена</button>
+  </div>
+</div>
+
+<!-- Модалка подтверждения -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <h3 id="confirmTitle">Подтверждение</h3>
+    <p style="text-align:center;margin-bottom:18px;" id="confirmText"></p>
+    <button class="modal-btn self" onclick="confirmPurchase()">Подтвердить</button>
+    <button class="modal-btn close" onclick="closeModal('confirmModal')">Отмена</button>
+  </div>
 </div>
 
 <script>
+// Данные
 const RANKS = [
-  {id:'hero', name:'HERO', icon:'⚔️', cls:'hero', price:0, desc:'/kit hero, /craft, 5 слотов аукциона, 2 привата'},
-  {id:'titan', name:'TITAN', icon:'🔼', cls:'titan', price:0, desc:'+ /hat, /feed, /rtpfar, 7 слотов, 4 привата'},
-  {id:'avenger', name:'AVENGER', icon:'⚓', cls:'avenger', price:0, desc:'+ /enderchest, /ext, /ignore, 8 приватов'},
-  {id:'overlord', name:'OVERLORD', icon:'👑', cls:'overlord', price:0, desc:'+ /prefix, /repair, /near, x2 валюты, 16 приватов'},
-  {id:'magister', name:'MAGISTER', icon:'🧙', cls:'magister', price:0, desc:'+ /nick, /invsee, /heal, /tptoggle, 48 приватов'},
-  {id:'imperator', name:'IMPERATOR', icon:'💼', cls:'imperator', price:0, desc:'+ /broadcast, /lightning, x4 валюты, 96 приватов'},
-  {id:'dragon', name:'DRAGON', icon:'🐲', cls:'dragon', price:0, desc:'+ /fly, /grant, погода, x6 валюты, 999+ приватов'}
+  {id:'hero',name:'HERO',icon:'⚔️',color:'#888',desc:'/kit hero, /craft, 5 слотов аука, 2 привата'},
+  {id:'titan',name:'TITAN',icon:'🔼',color:'#3498db',desc:'+ /hat, /feed, /rtpfar, 7 слотов, 4 привата'},
+  {id:'avenger',name:'AVENGER',icon:'⚓',color:'#9b59b6',desc:'+ /enderchest, /ext, /ignore, 8 приватов'},
+  {id:'overlord',name:'OVERLORD',icon:'👑',color:'#e67e22',desc:'+ /prefix, /repair, /near, x2 валюты, 16 приватов'},
+  {id:'magister',name:'MAGISTER',icon:'🧙',color:'#1abc9c',desc:'+ /nick, /invsee, /heal, /tptoggle, 48 приватов'},
+  {id:'imperator',name:'IMPERATOR',icon:'💼',color:'#e74c3c',desc:'+ /broadcast, /lightning, /rtp, x4 валюты, 96 приватов'},
+  {id:'dragon',name:'DRAGON',icon:'🐲',color:'#992222',desc:'+ /fly, /grant, погода, x6 валюты, 999+ приватов'}
 ];
-const RANK_ORDER = ['hero','titan','avenger','overlord','magister','imperator','dragon'];
+const RANK_ORDER = {hero:0,titan:1,avenger:2,overlord:3,magister:4,imperator:5,dragon:6};
 
 const CASES = [
-  {id:'hron', name:'Сундук с хронами', icon:'⏱️', cls:'titan', price:50, isPaid:true,
-   drops:[{min:100,max:500,chance:50},{min:1000,max:2000,chance:30},{min:2000,max:5000,chance:20}],
-   desc:'100–500 (50%) · 1000–2000 (30%) · 2000–5000 (20%)'},
-  {id:'delik', name:'Сундук с диликами', icon:'💎', cls:'magister', price:100, isPaid:true,
-   drops:[{min:10,max:100,chance:50},{min:100,max:300,chance:30},{min:300,max:500,chance:20}],
-   desc:'10–100 (50%) · 100–300 (30%) · 300–500 (20%)'}
+  {id:'chrones',name:'Сундук с хронами',icon:'⏱️',price:50,desc:'100-500 (50%), 1000-2000 (30%), 2000-5000 (20%)'},
+  {id:'delics',name:'Сундук с диликами',icon:'💎',price:100,desc:'10-100 (50%), 100-300 (30%), 300-500 (20%)'}
 ];
 
 const SERVICES = [
-  {id:'unban', name:'Разбан', icon:'🔓', cls:'overlord', price:0, isPaid:false, oneTime:false, desc:'Снятие бана. Можно покупать сколько угодно раз.', needsAccountForSelf:true},
-  {id:'unmute', name:'Размут', icon:'💬', cls:'magister', price:0, isPaid:false, oneTime:false, desc:'Снятие мута. Можно покупать сколько угодно раз.', needsAccountForSelf:true},
-  {id:'leather', name:'Кожаный сет', icon:'🛡️', cls:'avenger', price:0, isPaid:false, oneTime:true, desc:'Кожаная броня + деревянные инструменты + жареная баранина. В игре можно забирать каждые 30 мин.', needsAccountForSelf:false}
+  {id:'unban',name:'Разбан',icon:'🔓',price:0,desc:'Снятие бана',oneTime:false},
+  {id:'unmute',name:'Размут',icon:'💬',price:0,desc:'Снятие мута',oneTime:false},
+  {id:'leather_set',name:'Кожаный сет',icon:'🛡️',price:0,desc:'Кожаная броня + деревянные инструменты + жареная баранина. Можно забирать каждые 30 мин.',oneTime:true}
 ];
 
-// Test player
-const TEST_PLAYERS = [
-  {nick:'Nokia', avatar:'🧑', rank:'hero', hrons:10, deliks:11, playtime:'3 часа'}
+// Тестовые игроки
+let PLAYERS = [
+  {nick:'Nokia',avatar:'🧑',rank:'hero',chrones:10,delics:11,playtime:'3 часа',hasSet:false}
 ];
 
-// State
+// Состояние
 let state = {
-  account: null,
-  selfRank: null,
-  selfLeather: false,
+  linkedNick: null,
+  myRank: null,
+  mySet: false,
   history: [],
-  otherPlayers: {} // {nick: {rank, leather, ...}}
+  // что куплено другим игрокам
+  gifts: {}
 };
 
-function load() {
-  try {
-    const s = localStorage.getItem('delayed_state_v2');
-    if (s) state = Object.assign(state, JSON.parse(s));
-  } catch(e) {}
+let currentBuyItem = null;
+
+// Загрузка
+function loadState() {
+  const s = localStorage.getItem('delayed_state_v2');
+  if (s) {
+    const parsed = JSON.parse(s);
+    state = {...state, ...parsed};
+  }
+  // Восстанавливаем данные игроков из подарков
+  if (state.gifts) {
+    for (const nick in state.gifts) {
+      let p = PLAYERS.find(x => x.nick === nick);
+      if (p) {
+        if (state.gifts[nick].rank) p.rank = state.gifts[nick].rank;
+        if (state.gifts[nick].hasSet) p.hasSet = true;
+      }
+    }
+  }
 }
-function save() {
+
+function saveState() {
   localStorage.setItem('delayed_state_v2', JSON.stringify(state));
 }
 
-function rankName(id) {
-  const r = RANKS.find(r => r.id === id);
-  return r ? r.name : 'Игрок';
-}
-function rankObj(id) {
-  return RANKS.find(r => r.id === id);
-}
-
-// ===== Rendering =====
-function renderTopBar() {
-  // Bought items
-  const c = document.getElementById('bought-container');
-  c.innerHTML = '<strong>Куплено:</strong>';
-  if (state.selfRank) {
-    const r = rankObj(state.selfRank);
-    const el = document.createElement('span');
-    el.className = 'bought-item rank';
-    el.textContent = r.name;
-    c.appendChild(el);
-  }
-  if (state.selfLeather) {
-    const el = document.createElement('span');
-    el.className = 'bought-item';
-    el.textContent = 'Кожаный сет';
-    c.appendChild(el);
-  }
-
-  // Top-right: account + reset
-  const tr = document.getElementById('top-right');
-  tr.innerHTML = '';
-  if (state.account) {
-    const badge = document.createElement('span');
-    badge.className = 'account-badge';
-    badge.textContent = 'Аккаунт: ' + state.account.nick;
-    tr.appendChild(badge);
-  } else {
-    const btn = document.createElement('button');
-    btn.className = 'btn-link';
-    btn.textContent = 'Привязать аккаунт';
-    btn.onclick = () => openAccountModal();
-    tr.appendChild(btn);
-  }
-  const reset = document.createElement('button');
-  reset.className = 'btn-reset';
-  reset.textContent = 'Сбросить всё';
-  reset.onclick = resetAll;
-  tr.appendChild(reset);
+// Сброс
+function resetAll() {
+  localStorage.removeItem('delayed_state_v2');
+  state = { linkedNick: null, myRank: null, mySet: false, history: [], gifts: {} };
+  PLAYERS = [{nick:'Nokia',avatar:'🧑',rank:'hero',chrones:10,delics:11,playtime:'3 часа',hasSet:false}];
+  renderAll();
 }
 
-function renderPrivileges() {
-  const grid = document.getElementById('privileges');
-  grid.innerHTML = '';
-  RANKS.forEach((r, i) => {
-    const isCurrent = state.selfRank === r.id;
-    const isLower = state.selfRank && RANK_ORDER.indexOf(r.id) < RANK_ORDER.indexOf(state.selfRank);
-
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    let btnHtml;
-    if (isCurrent) {
-      btnHtml = '<button class="card-btn btn-done">Текущий ранг ✓</button>';
-    } else if (isLower) {
-      btnHtml = '<button class="card-btn btn-done">Заменён выше</button>';
-    } else {
-      btnHtml = '<button class="card-btn btn-free" onclick="onPurchaseClick(\'rank\','+i+')">Бесплатно</button>';
-    }
-
-    card.innerHTML = `
-      <div class="card-icon ${r.cls}">${r.icon}</div>
-      <div class="card-title">${r.name}</div>
-      <div class="card-price free">Бесплатно</div>
-      <div class="card-desc">${r.desc}</div>
-      ${btnHtml}
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function renderCases() {
-  const grid = document.getElementById('cases');
-  grid.innerHTML = '';
-  CASES.forEach((c, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="card-icon ${c.cls}">${c.icon}</div>
-      <div class="card-title">${c.name}</div>
-      <div class="card-price paid">${c.price} ₽</div>
-      <div class="card-desc">${c.desc}</div>
-      <button class="card-btn btn-buy" onclick="onPurchaseClick('case',${i})">Купить</button>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function renderServices() {
-  const grid = document.getElementById('services');
-  grid.innerHTML = '';
-  SERVICES.forEach((s, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    let btnText, btnClass, btnDisabled;
-    if (s.oneTime && state.selfLeather) {
-      btnText = 'Получено ✓';
-      btnClass = 'btn-done';
-      btnDisabled = true;
-    } else {
-      btnText = 'Бесплатно';
-      btnClass = 'btn-free';
-      btnDisabled = false;
-    }
-    card.innerHTML = `
-      <div class="card-icon ${s.cls}">${s.icon}</div>
-      <div class="card-title">${s.name}</div>
-      <div class="card-price free">Бесплатно</div>
-      <div class="card-desc">${s.desc}</div>
-      <button class="card-btn ${btnClass}" ${btnDisabled?'disabled':''} onclick="${btnDisabled?'':'onPurchaseClick(\'service\','+i+')'}">${btnText}</button>
-    `;
-    grid.appendChild(card);
-  });
-}
-
-function renderHistory() {
-  const grid = document.getElementById('history');
-  grid.innerHTML = '';
-  if (state.history.length === 0) {
-    grid.innerHTML = '<p style="text-align:center;color:var(--sec);padding:40px;">История пуста</p>';
-    return;
-  }
-  state.history.slice().reverse().forEach(h => {
-    const item = document.createElement('div');
-    item.className = 'history-item';
-    item.innerHTML = `
-      <span><strong>${h.item}</strong> → <span class="history-recipient">${h.recipient}</span></span>
-      <span class="history-date">${h.date}</span>
-    `;
-    grid.appendChild(item);
-  });
-}
-
-function renderAll() {
-  renderTopBar();
-  renderPrivileges();
-  renderCases();
-  renderServices();
-  renderHistory();
-}
-
-// ===== Tabs =====
-function showTab(name, btn) {
-  ['privileges','cases','services','history'].forEach(id => {
-    document.getElementById(id).style.display = 'none';
-  });
-  document.getElementById(name).style.display = name === 'history' ? 'grid' : 'grid';
+// Вкладки
+function showTab(tab, btn) {
+  document.querySelectorAll('.grid, .history-list').forEach(el => el.style.display = 'none');
+  document.getElementById(tab).style.display = tab === 'history' ? 'block' : 'grid';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// ===== Account modal =====
-function openAccountModal() {
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `
-    <h2>Привязка аккаунта</h2>
-    <p style="color:var(--sec);font-size:0.85em;text-align:center;margin-bottom:16px;">Введите ник и пароль от сервера</p>
-    <div class="modal-field">
-      <label>Ник Minecraft (3–16 символов)</label>
-      <input type="text" id="acc-nick" maxlength="16" placeholder="Введите ник">
-    </div>
-    <div class="modal-field">
-      <label>Пароль от сервера</label>
-      <input type="password" id="acc-pass" placeholder="Введите пароль">
-    </div>
-    <div class="modal-error" id="acc-error"></div>
-    <button class="modal-btn modal-btn-primary" onclick="submitAccount()">Привязать</button>
-    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Отмена</button>
-  `;
-  document.getElementById('modal-overlay').classList.add('active');
+// Рендер привилегий
+function renderPrivileges() {
+  const el = document.getElementById('privileges');
+  el.innerHTML = '';
+  RANKS.forEach(r => {
+    const isMine = state.myRank === r.id;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <span class="card-icon">${r.icon}</span>
+      <div class="card-title" style="color:${r.color};">${r.name}</div>
+      <div class="card-price free">Бесплатно</div>
+      <div class="card-desc">${r.desc}</div>
+      <button class="action-btn ${isMine ? 'done' : 'free'}" ${isMine ? 'disabled' : ''} onclick="startBuy('rank','${r.id}')">
+        ${isMine ? 'Текущий ранг ✓' : 'Бесплатно'}
+      </button>
+    `;
+    el.appendChild(card);
+  });
 }
 
-function submitAccount() {
-  const nick = document.getElementById('acc-nick').value.trim();
-  const pass = document.getElementById('acc-pass').value.trim();
-  const err = document.getElementById('acc-error');
+// Рендер кейсов
+function renderCases() {
+  const el = document.getElementById('cases');
+  el.innerHTML = '';
+  CASES.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <span class="card-icon">${c.icon}</span>
+      <div class="card-title">${c.name}</div>
+      <div class="card-price paid">${c.price} ₽</div>
+      <div class="card-desc">${c.desc}</div>
+      <button class="action-btn paid" onclick="startBuy('case','${c.id}')">Купить</button>
+    `;
+    el.appendChild(card);
+  });
+}
+
+// Рендер услуг
+function renderServices() {
+  const el = document.getElementById('services');
+  el.innerHTML = '';
+  SERVICES.forEach(s => {
+    const isMine = s.oneTime && state.mySet && s.id === 'leather_set';
+    const needsAccount = s.id === 'unban' || s.id === 'unmute';
+    const locked = needsAccount && !state.linkedNick;
+    let btnClass = 'free';
+    let btnText = 'Бесплатно';
+    if (isMine) { btnClass = 'done'; btnText = 'Получено ✓'; }
+    if (locked) { btnClass = 'disabled'; btnText = 'Нужен аккаунт'; }
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <span class="badge-free">БЕСПЛАТНО</span>
+      <span class="card-icon">${s.icon}</span>
+      <div class="card-title">${s.name}</div>
+      <div class="card-price free">Бесплатно</div>
+      <div class="card-desc">${s.desc}</div>
+      <button class="action-btn ${btnClass}" ${isMine || locked ? 'disabled' : ''} onclick="startBuy('service','${s.id}')">${btnText}</button>
+    `;
+    el.appendChild(card);
+  });
+}
+
+// Рендер куплено
+function renderBought() {
+  const el = document.getElementById('boughtBar');
+  let html = '<strong>Куплено:</strong>';
+  let count = 0;
+  if (state.myRank) {
+    const r = RANKS.find(x => x.id === state.myRank);
+    html += `<span class="bought-tag rank">${r.name}</span>`;
+    count++;
+  }
+  if (state.mySet) {
+    html += '<span class="bought-tag set">Кожаный сет</span>';
+    count++;
+  }
+  if (count === 0) html += '<span class="bought-count">пусто</span>';
+  document.getElementById('boughtBar').innerHTML = html;
+}
+
+// Рендер истории
+function renderHistory() {
+  const el = document.getElementById('history');
+  if (state.history.length === 0) {
+    el.innerHTML = '<div class="no-history">Пока пусто</div>';
+    return;
+  }
+  el.innerHTML = '';
+  state.history.forEach(h => {
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
+      <div>
+        <span class="history-name">${h.item}</span>
+        <span class="history-to">→ ${h.to}</span>
+      </div>
+      <span class="history-date">${h.date}</span>
+    `;
+    el.appendChild(item);
+  });
+}
+
+// Рендер шапки
+function renderHeader() {
+  const nd = document.getElementById('nickDisplay');
+  const bl = document.getElementById('btnLink');
+  if (state.linkedNick) {
+    nd.style.display = 'inline-block';
+    nd.className = 'nick-display linked';
+    nd.textContent = 'Аккаунт: ' + state.linkedNick;
+    bl.style.display = 'none';
+  } else {
+    nd.style.display = 'none';
+    bl.style.display = 'inline-block';
+  }
+}
+
+function renderAll() {
+  renderHeader();
+  renderPrivileges();
+  renderCases();
+  renderServices();
+  renderBought();
+  renderHistory();
+}
+
+// Модалки
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+function openLinkModal() {
+  document.getElementById('linkNick').value = '';
+  document.getElementById('linkPass').value = '';
+  document.getElementById('linkError').classList.remove('show');
+  openModal('linkModal');
+}
+
+function doLink() {
+  const nick = document.getElementById('linkNick').value.trim();
+  const pass = document.getElementById('linkPass').value.trim();
+  const err = document.getElementById('linkError');
   if (nick.length < 3 || nick.length > 16) {
-    err.textContent = 'Ник должен быть от 3 до 16 символов';
+    err.textContent = 'Ник: 3-16 символов';
+    err.classList.add('show');
     return;
   }
   if (pass.length < 1) {
     err.textContent = 'Введите пароль';
+    err.classList.add('show');
     return;
   }
-  state.account = { nick, pass };
-  save();
+  state.linkedNick = nick;
+  saveState();
   renderAll();
-  closeModal();
+  closeModal('linkModal');
 }
 
-// ===== Purchase flow =====
-function onPurchaseClick(type, index) {
-  let item, itemName, isOneTime, needsAccountForSelf;
-
-  if (type === 'rank') {
-    item = RANKS[index];
-    itemName = item.name;
-    isOneTime = true;
-    needsAccountForSelf = true;
-  } else if (type === 'case') {
-    item = CASES[index];
-    itemName = item.name;
-    isOneTime = false;
-    needsAccountForSelf = true;
-  } else if (type === 'service') {
-    item = SERVICES[index];
-    itemName = item.name;
-    isOneTime = item.oneTime;
-    needsAccountForSelf = item.needsAccountForSelf;
-  }
-
-  openChoiceModal(type, index, itemName, isOneTime, needsAccountForSelf);
+// Начало покупки
+function startBuy(type, id) {
+  currentBuyItem = {type, id};
+  document.getElementById('buyError').classList.remove('show');
+  const item = getItem(type, id);
+  document.getElementById('buyModalTitle').textContent = item.name;
+  openModal('buyModal');
 }
 
-function openChoiceModal(type, index, itemName, isOneTime, needsAccountForSelf) {
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `
-    <h2>${itemName}</h2>
-    <button class="choice-btn" onclick="buyForSelf('${type}',${index})">🛒 Купить себе</button>
-    <button class="choice-btn" onclick="openPlayerSearch('${type}',${index})">🎁 Купить кому-то</button>
-    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Отмена</button>
-  `;
+function getItem(type, id) {
+  if (type === 'rank') return RANKS.find(r => r.id === id);
+  if (type === 'case') return CASES.find(c => c.id === id);
+  if (type === 'service') return SERVICES.find(s => s.id === id);
 }
 
-function buyForSelf(type, index) {
-  let item, itemName, isOneTime;
-
-  if (type === 'rank') {
-    item = RANKS[index];
-    itemName = item.name;
-    isOneTime = true;
-  } else if (type === 'case') {
-    item = CASES[index];
-    itemName = item.name;
-    isOneTime = false;
-  } else if (type === 'service') {
-    item = SERVICES[index];
-    itemName = item.name;
-    isOneTime = item.oneTime;
-  }
-
-  if (item.needsAccountForSelf && !state.account) {
-    const m = document.getElementById('modal-content');
-    m.innerHTML = `
-      <h2>${itemName}</h2>
-      <div class="modal-error">Невозможно купить: аккаунт не привязан.<br>Сначала привяжите аккаунт.</div>
-      <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Закрыть</button>
-    `;
+// Купить себе
+function buySelf() {
+  const err = document.getElementById('buyError');
+  if (!state.linkedNick) {
+    err.textContent = 'Невозможно купить: аккаунт не привязан';
+    err.classList.add('show');
     return;
   }
-
-  // Execute purchase for self
-  if (type === 'rank') {
-    state.selfRank = item.id;
-  } else if (type === 'service' && item.id === 'leather') {
-    state.selfLeather = true;
-  }
-
-  addHistory(itemName, state.account ? state.account.nick : 'Вы');
-  save();
-  renderAll();
-
-  // Show success
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `
-    <h2>✅ Готово</h2>
-    <p style="text-align:center;font-size:1.1em;">${itemName} куплено для <strong>${state.account ? state.account.nick : 'Вас'}</strong></p>
-    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Закрыть</button>
-  `;
+  doPurchase(state.linkedNick);
 }
 
-function openPlayerSearch(type, index) {
-  const m = document.getElementById('modal-content');
-  
-  let item, itemName, isOneTime;
-  if (type === 'rank') {
-    item = RANKS[index];
-    itemName = item.name;
-    isOneTime = true;
-  } else if (type === 'case') {
-    item = CASES[index];
-    itemName = item.name;
-    isOneTime = false;
-  } else if (type === 'service') {
-    item = SERVICES[index];
-    itemName = item.name;
-    isOneTime = item.oneTime;
-  }
-
-  m.innerHTML = `
-    <h2>Купить кому-то — ${itemName}</h2>
-    <input type="text" class="search-box" id="player-search" placeholder="Введите ник игрока..." oninput="filterPlayers()">
-    <div id="player-list"></div>
-    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Отмена</button>
-  `;
-  document.getElementById('modal-overlay').classList.add('active');
-  
-  // Store current purchase context
-  window._currentPurchase = { type, index, itemName, isOneTime };
-  filterPlayers();
+// Купить кому-то
+function buyOther() {
+  closeModal('buyModal');
+  document.getElementById('searchInput').value = '';
+  renderPlayers();
+  openModal('searchModal');
 }
 
-function filterPlayers() {
-  const query = document.getElementById('player-search').value.trim().toLowerCase();
-  const list = document.getElementById('player-list');
+// Рендер списка игроков
+function renderPlayers() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const list = document.getElementById('playerList');
   list.innerHTML = '';
-
-  TEST_PLAYERS.forEach(p => {
-    if (query && !p.nick.toLowerCase().includes(query)) return;
-
-    // Check if already purchased for this player
-    const pp = state.otherPlayers[p.nick] || {};
-    const ctx = window._currentPurchase;
-    let alreadyBought = false;
-    let rankDisplay = 'Игрок';
-
-    if (pp.rank) {
-      rankDisplay = rankName(pp.rank);
+  let filtered = query ? PLAYERS.filter(p => p.nick.toLowerCase().includes(query)) : PLAYERS;
+  if (filtered.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:#555;padding:20px;">Никто не найден</div>';
+    return;
+  }
+  filtered.forEach(p => {
+    const rankInfo = RANKS.find(r => r.id === p.rank) || {name:'Игрок',color:'#888'};
+    const item = currentBuyItem;
+    let alreadyHas = false;
+    let alreadyText = '';
+    if (item) {
+      if (item.type === 'rank') {
+        const targetRank = RANK_ORDER[item.id];
+        const playerRank = RANK_ORDER[p.rank] || -1;
+        if (playerRank >= targetRank) {
+          alreadyHas = true;
+          alreadyText = 'Уже есть ранг выше или равный';
+        }
+      } else if (item.type === 'service' && item.id === 'leather_set') {
+        if (p.hasSet) {
+          alreadyHas = true;
+          alreadyText = 'Уже куплено ✓';
+        }
+      }
     }
-
-    if (ctx.type === 'rank' && pp.rank === RANKS[ctx.index].id) {
-      alreadyBought = true;
-    }
-    if (ctx.type === 'service' && ctx.isOneTime && pp.leather) {
-      alreadyBought = true;
-    }
-
     const card = document.createElement('div');
-    card.className = 'player-card';
-    
-    const rankCls = pp.rank ? rankObj(pp.rank).cls : 'player-rank';
-    
+    card.className = 'player-card' + (alreadyHas ? ' disabled' : '');
     card.innerHTML = `
       <div class="player-avatar">${p.avatar}</div>
       <div class="player-info">
-        <div class="player-nick">${p.nick} <span class="player-rank-badge ${rankCls}">${rankDisplay}</span></div>
-        <div class="player-stats">⏱️ ${pp.hrons !== undefined ? pp.hrons : p.hrons} хронов | 💎 ${pp.deliks !== undefined ? pp.deliks : p.deliks} диликов | 🎮 Играет ${p.playtime}</div>
+        <div class="player-nick">${p.nick}</div>
+        <span class="player-rank" style="background:${rankInfo.color || '#888'};color:#fff;">${rankInfo.name || 'Игрок'}</span>
+        <div class="player-stats">⏱️ ${p.chrones} хронов | 💎 ${p.delics} диликов | 🎮 ${p.playtime}</div>
       </div>
+      ${alreadyHas ? '<div class="player-already">' + alreadyText + '</div>' : ''}
     `;
-
-    if (alreadyBought) {
-      card.style.opacity = '0.4';
-      card.style.cursor = 'not-allowed';
-      card.innerHTML += '<span style="color:#666;font-size:0.85em;">Уже куплено ✓</span>';
-    } else {
-      card.onclick = () => confirmPurchaseForPlayer(p.nick);
+    if (!alreadyHas) {
+      card.onclick = function() { selectPlayer(p.nick); };
     }
     list.appendChild(card);
   });
-
-  if (list.children.length === 0) {
-    list.innerHTML = '<p style="color:var(--sec);text-align:center;padding:20px;">Игроки не найдены</p>';
-  }
 }
 
-function confirmPurchaseForPlayer(nick) {
-  const ctx = window._currentPurchase;
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `
-    <h2>Подтверждение</h2>
-    <p style="text-align:center;font-size:1.1em;">Купить <strong>${ctx.itemName}</strong> для игрока <strong>${nick}</strong>?</p>
-    <button class="modal-btn modal-btn-primary" onclick="executePurchaseForPlayer('${nick}')">Да, купить</button>
-    <button class="modal-btn modal-btn-secondary" onclick="openPlayerSearch('${ctx.type}',${ctx.index})">Назад</button>
-  `;
+// Выбор игрока
+function selectPlayer(nick) {
+  closeModal('searchModal');
+  const item = getItem(currentBuyItem.type, currentBuyItem.id);
+  document.getElementById('confirmText').textContent = 'Купить "' + item.name + '" для игрока ' + nick + '?';
+  document.getElementById('confirmTitle').textContent = 'Подтверждение';
+  openModal('confirmModal');
+  window._confirmNick = nick;
 }
 
-function executePurchaseForPlayer(nick) {
-  const ctx = window._currentPurchase;
-
-  // Initialize player state if needed
-  if (!state.otherPlayers[nick]) {
-    state.otherPlayers[nick] = { rank:null, leather:false, hrons:undefined, deliks:undefined };
-  }
-  const pp = state.otherPlayers[nick];
-
-  // Apply purchase
-  if (ctx.type === 'rank') {
-    pp.rank = RANKS[ctx.index].id;
-  } else if (ctx.type === 'service' && ctx.isOneTime) {
-    pp.leather = true;
-  }
-
-  addHistory(ctx.itemName, nick);
-  save();
-  renderAll();
-
-  const m = document.getElementById('modal-content');
-  m.innerHTML = `
-    <h2>✅ Готово</h2>
-    <p style="text-align:center;font-size:1.1em;">${ctx.itemName} куплено для <strong>${nick}</strong></p>
-    <button class="modal-btn modal-btn-secondary" onclick="closeModal()">Закрыть</button>
-  `;
+// Подтверждение покупки
+function confirmPurchase() {
+  doPurchase(window._confirmNick);
 }
 
-// ===== History =====
-function addHistory(item, recipient) {
+// Сама покупка
+function doPurchase(targetNick) {
+  const item = currentBuyItem;
+  if (!item) return;
+  
+  // Записываем в историю
   const now = new Date();
-  const dateStr = now.toLocaleString('ru-RU');
-  state.history.push({ item, recipient, date: dateStr });
-}
-
-// ===== Reset =====
-function resetAll() {
-  state = {
-    account: null,
-    selfRank: null,
-    selfLeather: false,
-    history: [],
-    otherPlayers: {}
-  };
-  save();
+  const dateStr = now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU', {hour:'2-digit',minute:'2-digit'});
+  state.history.unshift({item: item.name, to: targetNick, date: dateStr});
+  
+  const isSelf = (targetNick === state.linkedNick);
+  
+  if (item.type === 'rank') {
+    if (isSelf) {
+      state.myRank = item.id;
+    } else {
+      // Покупка другому — обновляем ранг игрока
+      let p = PLAYERS.find(x => x.nick === targetNick);
+      if (p) p.rank = item.id;
+      if (!state.gifts[targetNick]) state.gifts[targetNick] = {};
+      state.gifts[targetNick].rank = item.id;
+    }
+  } else if (item.type === 'service' && item.id === 'leather_set') {
+    if (isSelf) {
+      state.mySet = true;
+    } else {
+      let p = PLAYERS.find(x => x.nick === targetNick);
+      if (p) p.hasSet = true;
+      if (!state.gifts[targetNick]) state.gifts[targetNick] = {};
+      state.gifts[targetNick].hasSet = true;
+    }
+  }
+  
+  saveState();
   renderAll();
+  closeModal('buyModal');
+  closeModal('confirmModal');
 }
 
-// ===== Modal =====
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('active');
-}
-
-document.getElementById('modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-// ===== Init =====
-load();
+// Старт
+loadState();
 renderAll();
 </script>
 </body>
